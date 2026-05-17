@@ -49,3 +49,27 @@ def test_convert_natural_language_job_request_to_flux_batch_script_failure():
     assert result["job_request"] is None
     assert result["script"] is None
     assert result["errors"]
+
+
+def test_convert_job_request_to_flux_batch_script_with_runtime_options():
+    result = convert_job_request_to_flux_batch_script(
+        {
+            "command": "python train.py",
+            "job_name": "train-job",
+            "num_nodes": 1,
+            "num_tasks": 1,
+            "cpus_per_task": 1,
+            "gpus_per_task": 0,
+            "wall_time": 1800,
+            "working_directory": "/work/project",
+            "environment": {"OMP_NUM_THREADS": "1", "DATA_DIR": "/data"},
+            "output_file": "stdout.log",
+            "error_file": "stderr.log",
+        }
+    )
+
+    script = result["script"]
+    assert "export OMP_NUM_THREADS='1'" in script
+    assert "export DATA_DIR='/data'" in script
+    assert "cd /work/project" in script
+    assert "python train.py > stdout.log 2> stderr.log" in script

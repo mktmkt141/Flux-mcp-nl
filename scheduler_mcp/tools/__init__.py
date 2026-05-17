@@ -1,19 +1,26 @@
-from .analysis import analyze_natural_language_job_request
-from .convert import (
+from scheduler_mcp.analysis import analyze_natural_language_job_request, check_job_request_feasibility
+from scheduler_mcp.job import (
+    flux_cancel_job,
+    flux_get_job_logs,
+    flux_get_job_info,
+    submit_job_request_to_flux,
+    submit_natural_language_job_request_to_flux,
+)
+from scheduler_mcp.resource import get_flux_resource_list
+from scheduler_mcp.transform import (
+    analyze_natural_language_job_request_with_gemini,
     convert_job_request_to_flux_batch_script,
     convert_natural_language_job_request_to_flux_batch_script,
-)
-from .feasibility import check_job_request_feasibility
-from .gemini_nl import (
-    analyze_natural_language_job_request_with_gemini,
+    parse_natural_language_job_request,
     parse_natural_language_job_request_with_gemini,
     submit_natural_language_job_request_to_flux_with_gemini,
 )
-from .logs import flux_get_job_logs
-from .nl import parse_natural_language_job_request
-from .resource import get_flux_resource_list
-from .status import flux_get_job_info
-from .submit import submit_job_request_to_flux, submit_natural_language_job_request_to_flux
+from scheduler_mcp.validate import (
+    validate_flux_batch_script,
+    validate_job_request_to_flux_batch_script,
+    validate_natural_language_job_request,
+    validate_natural_language_job_request_to_flux_batch_script,
+)
 
 __all__ = [
     "analyze_natural_language_job_request",
@@ -22,6 +29,7 @@ __all__ = [
     "convert_natural_language_job_request_to_flux_batch_script",
     "check_job_request_feasibility",
     "get_flux_resource_list",
+    "flux_cancel_job",
     "flux_get_job_logs",
     "flux_get_job_info",
     "parse_natural_language_job_request_with_gemini",
@@ -29,4 +37,8 @@ __all__ = [
     "submit_job_request_to_flux",
     "submit_natural_language_job_request_to_flux",
     "submit_natural_language_job_request_to_flux_with_gemini",
+    "validate_flux_batch_script",
+    "validate_job_request_to_flux_batch_script",
+    "validate_natural_language_job_request",
+    "validate_natural_language_job_request_to_flux_batch_script",
 ]
