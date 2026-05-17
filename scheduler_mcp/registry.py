@@ -1,0 +1,31 @@
+from scheduler_mcp.tools import (
+    analyze_natural_language_job_request,
+    analyze_natural_language_job_request_with_gemini,
+    check_job_request_feasibility,
+    convert_job_request_to_flux_batch_script,
+    convert_natural_language_job_request_to_flux_batch_script,
+    flux_get_job_logs,
+    flux_get_job_info,
+    get_flux_resource_list,
+    parse_natural_language_job_request_with_gemini,
+    parse_natural_language_job_request,
+    submit_job_request_to_flux,
+    submit_natural_language_job_request_to_flux,
+    submit_natural_language_job_request_to_flux_with_gemini,
+)
+
+TOOLS = [
+    analyze_natural_language_job_request,
+    analyze_natural_language_job_request_with_gemini,
+    convert_natural_language_job_request_to_flux_batch_script,
+    convert_job_request_to_flux_batch_script,
+    parse_natural_language_job_request_with_gemini,
+    parse_natural_language_job_request,
+    check_job_request_feasibility,
+    get_flux_resource_list,
+    flux_get_job_info,
+    flux_get_job_logs,
+    submit_natural_language_job_request_to_flux_with_gemini,
+    submit_natural_language_job_request_to_flux,
+    submit_job_request_to_flux,
+]

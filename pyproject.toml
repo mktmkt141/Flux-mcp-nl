@@ -1,0 +1,16 @@
+[project]
+name = "scheduler-mcp"
+version = "0.1.0"
+description = "Minimal scheduler-oriented MCP server inspired by flux-mcp."
+requires-python = ">=3.10"
+dependencies = [
+    "fastmcp",
+]
+
+[build-system]
+requires = ["setuptools>=61"]
+build-backend = "setuptools.build_meta"
+
+[tool.setuptools.packages.find]
+where = ["."]
+
