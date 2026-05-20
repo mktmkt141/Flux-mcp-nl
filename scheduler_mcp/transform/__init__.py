@@ -1,5 +1,6 @@
 from .convert import (
     convert_job_request_to_flux_batch_script,
+    convert_job_request_to_flux_jobspec,
     convert_natural_language_job_request_to_flux_batch_script,
 )
 from .gemini_nl import (
@@ -14,6 +15,7 @@ __all__ = [
     "ParseJobRequestResult",
     "analyze_natural_language_job_request_with_gemini",
     "convert_job_request_to_flux_batch_script",
+    "convert_job_request_to_flux_jobspec",
     "convert_natural_language_job_request_to_flux_batch_script",
     "parse_natural_language_job_request",
     "parse_natural_language_job_request_with_gemini",
