@@ -1,4 +1,4 @@
-from scheduler_mcp.tools.cancel import flux_cancel_job
+from scheduler_mcp.job.cancel import flux_cancel_job
 
 
 def test_flux_cancel_job_success(monkeypatch):

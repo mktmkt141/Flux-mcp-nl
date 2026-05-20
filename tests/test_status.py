@@ -1,4 +1,4 @@
-from scheduler_mcp.tools.status import flux_get_job_info
+from scheduler_mcp.job.status import flux_get_job_info
 
 
 def test_flux_get_job_info_success(monkeypatch):

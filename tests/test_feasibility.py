@@ -1,4 +1,4 @@
-from scheduler_mcp.tools.feasibility import check_job_request_feasibility
+from scheduler_mcp.analysis.feasibility import check_job_request_feasibility
 
 
 def test_feasible_job_request(monkeypatch):
@@ -23,7 +23,7 @@ def test_feasible_job_request(monkeypatch):
         }
 
     monkeypatch.setattr(
-        "scheduler_mcp.tools.feasibility.get_flux_resource_list", fake_resource_report
+        "scheduler_mcp.analysis.feasibility.get_flux_resource_list", fake_resource_report
     )
 
     result = check_job_request_feasibility(
@@ -64,7 +64,7 @@ def test_infeasible_job_request(monkeypatch):
         }
 
     monkeypatch.setattr(
-        "scheduler_mcp.tools.feasibility.get_flux_resource_list", fake_resource_report
+        "scheduler_mcp.analysis.feasibility.get_flux_resource_list", fake_resource_report
     )
 
     result = check_job_request_feasibility(

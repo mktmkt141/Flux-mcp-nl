@@ -1,6 +1,6 @@
 import os
 
-from scheduler_mcp.tools.logs import flux_get_job_logs
+from scheduler_mcp.job.logs import flux_get_job_logs
 
 
 def test_flux_get_job_logs_success(monkeypatch):
@@ -28,7 +28,7 @@ def test_flux_get_job_logs_success(monkeypatch):
 
     monkeypatch.setitem(__import__("sys").modules, "flux", FakeFluxModule)
     monkeypatch.setitem(__import__("sys").modules, "flux.job", FakeFluxJobModule)
-    monkeypatch.setattr("scheduler_mcp.tools.logs.os.path.exists", lambda path: True)
+    monkeypatch.setattr("scheduler_mcp.job.logs.os.path.exists", lambda path: True)
 
     def fake_open(path, mode="r", encoding=None):
         class FakeFile:
@@ -78,7 +78,7 @@ def test_flux_get_job_logs_failure(monkeypatch):
 
     monkeypatch.setitem(__import__("sys").modules, "flux", FakeFluxModule)
     monkeypatch.setitem(__import__("sys").modules, "flux.job", FakeFluxJobModule)
-    monkeypatch.setattr("scheduler_mcp.tools.logs.os.path.exists", lambda path: False)
+    monkeypatch.setattr("scheduler_mcp.job.logs.os.path.exists", lambda path: False)
 
     result = flux_get_job_logs("missing")
 

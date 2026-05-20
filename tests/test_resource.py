@@ -1,6 +1,6 @@
 from types import SimpleNamespace
 
-from scheduler_mcp.tools import resource
+from scheduler_mcp.resource import resource
 
 
 class FakeBucket:

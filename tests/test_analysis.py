@@ -1,4 +1,4 @@
-from scheduler_mcp.tools.analysis import analyze_natural_language_job_request
+from scheduler_mcp.analysis.analysis import analyze_natural_language_job_request
 
 
 def test_analyze_success(monkeypatch):
@@ -25,7 +25,7 @@ def test_analyze_success(monkeypatch):
         }
 
     monkeypatch.setattr(
-        "scheduler_mcp.tools.analysis.check_job_request_feasibility",
+        "scheduler_mcp.analysis.analysis.check_job_request_feasibility",
         fake_feasibility,
     )
 

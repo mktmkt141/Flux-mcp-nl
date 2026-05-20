@@ -42,18 +42,50 @@ def flux_sched_resource_feasibility_check(
     """
     try:
         handle = _get_handle(uri)
-        feasibility = handle.rpc("feasibility.check", {"jobspec": jobspec_dict}).get()
+        # In this Flux RPC, a satisfiable request returns no payload (Python None / JSON null).
+        # We convert that "silent success" into an explicit satisfiable=True result for MCP clients.
+        raw_response = handle.rpc("feasibility.check", {"jobspec": jobspec_dict}).get()
         return {
             "success": True,
             "error": None,
             "jobspec": jobspec_dict,
-            "feasibility": feasibility,
+            "satisfiable": True,
+            "scheduler_message": None,
+            "feasibility": {
+                "satisfiable": True,
+                "raw_response": raw_response,
+            },
+        }
+    except OSError as exc:
+        # Flux reports an impossible request by raising OSError("Unsatisfiable request").
+        # That is a scheduler verdict, so expose it as satisfiable=False instead of success=False.
+        if "Unsatisfiable request" in str(exc):
+            return {
+                "success": True,
+                "error": None,
+                "jobspec": jobspec_dict,
+                "satisfiable": False,
+                "scheduler_message": str(exc),
+                "feasibility": {
+                    "satisfiable": False,
+                    "raw_response": None,
+                },
+            }
+        return {
+            "success": False,
+            "error": str(exc),
+            "jobspec": jobspec_dict,
+            "satisfiable": None,
+            "scheduler_message": None,
+            "feasibility": None,
         }
     except Exception as exc:
         return {
             "success": False,
             "error": str(exc),
             "jobspec": jobspec_dict,
+            "satisfiable": None,
+            "scheduler_message": None,
             "feasibility": None,
         }
 
@@ -94,6 +126,8 @@ def check_job_request_sched_feasibility(
         "error": feasibility_result["error"],
         "job_request": dumped_job_request,
         "jobspec": feasibility_result["jobspec"],
+        "satisfiable": feasibility_result["satisfiable"],
+        "scheduler_message": feasibility_result["scheduler_message"],
         "feasibility": feasibility_result["feasibility"],
         "conversion_errors": jobspec_result["errors"],
     }

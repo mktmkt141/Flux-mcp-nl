@@ -59,15 +59,13 @@ def _render_flux_batch_script(job_request: JobRequest) -> str:
 
 def _fallback_flux_jobspec(job_request: JobRequest) -> Dict[str, Any]:
     command = ["/bin/bash", "-lc", job_request.command]
-    system: Dict[str, Any] = {}
+    system: Dict[str, Any] = {"environment": dict(job_request.environment)}
     if job_request.job_name:
         system["job"] = {"name": job_request.job_name}
     if job_request.wall_time is not None:
         system["duration"] = job_request.wall_time
     if job_request.working_directory:
         system["cwd"] = job_request.working_directory
-    if job_request.environment:
-        system["environment"] = job_request.environment
     if job_request.output_file:
         system["output"] = job_request.output_file
     if job_request.error_file:
@@ -114,8 +112,10 @@ def _jobspec_from_flux_api(job_request: JobRequest) -> Dict[str, Any]:
         num_nodes=job_request.num_nodes,
     )
 
-    if job_request.environment:
-        jobspec.environment = job_request.environment
+    # JobspecV1.from_command() may inherit the caller's shell environment.
+    # Overwrite it here so secrets like GEMINI_API_KEY are not copied into jobspec output
+    # unless the user explicitly put them in JobRequest.environment.
+    jobspec.environment = dict(job_request.environment)
     if job_request.wall_time is not None:
         jobspec.duration = job_request.wall_time
     if job_request.working_directory is not None:

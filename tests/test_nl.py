@@ -1,4 +1,4 @@
-from scheduler_mcp.tools.nl import parse_natural_language_job_request
+from scheduler_mcp.transform.nl import parse_natural_language_job_request
 
 
 def test_parse_training_request():
@@ -32,4 +32,3 @@ def test_parse_failure_without_command():
     assert result["success"] is False
     assert result["job_request"] is None
     assert result["errors"]
-

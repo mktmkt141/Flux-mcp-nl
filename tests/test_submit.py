@@ -1,6 +1,6 @@
 import subprocess
 
-from scheduler_mcp.tools.submit import (
+from scheduler_mcp.job.submit import (
     submit_job_request_to_flux,
     submit_natural_language_job_request_to_flux,
 )
@@ -16,7 +16,7 @@ def test_submit_job_request_to_flux_success(monkeypatch):
         )
 
     monkeypatch.setattr(
-        "scheduler_mcp.tools.submit._submit_flux_batch_script", fake_submit
+        "scheduler_mcp.job.submit._submit_flux_batch_script", fake_submit
     )
 
     result = submit_job_request_to_flux(
@@ -45,7 +45,7 @@ def test_submit_job_request_to_flux_failure(monkeypatch):
         )
 
     monkeypatch.setattr(
-        "scheduler_mcp.tools.submit._submit_flux_batch_script", fake_submit
+        "scheduler_mcp.job.submit._submit_flux_batch_script", fake_submit
     )
 
     result = submit_job_request_to_flux(

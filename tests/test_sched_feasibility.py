@@ -1,4 +1,4 @@
-from scheduler_mcp.tools.sched import (
+from scheduler_mcp.sched.feasibility import (
     check_job_request_sched_feasibility,
     flux_sched_resource_feasibility_check,
 )
@@ -7,7 +7,7 @@ from scheduler_mcp.tools.sched import (
 def test_flux_sched_resource_feasibility_check_success(monkeypatch):
     class FakeRPCResult:
         def get(self):
-            return {"satisfiable": True}
+            return None
 
     class FakeHandle:
         def rpc(self, name, payload):
@@ -26,7 +26,30 @@ def test_flux_sched_resource_feasibility_check_success(monkeypatch):
 
     assert result["success"] is True
     assert result["error"] is None
+    assert result["satisfiable"] is True
+    assert result["scheduler_message"] is None
     assert result["feasibility"]["satisfiable"] is True
+
+
+def test_flux_sched_resource_feasibility_check_unsatisfiable(monkeypatch):
+    class FakeHandle:
+        def rpc(self, name, payload):
+            raise OSError(19, "Unsatisfiable request")
+
+    class FakeFluxModule:
+        @staticmethod
+        def Flux(uri=None):
+            return FakeHandle()
+
+    monkeypatch.setitem(__import__("sys").modules, "flux", FakeFluxModule)
+
+    result = flux_sched_resource_feasibility_check({"version": 1})
+
+    assert result["success"] is True
+    assert result["error"] is None
+    assert result["satisfiable"] is False
+    assert "Unsatisfiable request" in result["scheduler_message"]
+    assert result["feasibility"]["satisfiable"] is False
 
 
 def test_flux_sched_resource_feasibility_check_failure(monkeypatch):
@@ -45,6 +68,7 @@ def test_flux_sched_resource_feasibility_check_failure(monkeypatch):
 
     assert result["success"] is False
     assert result["error"] == "scheduler rpc failed"
+    assert result["satisfiable"] is None
     assert result["feasibility"] is None
 
 
@@ -64,6 +88,8 @@ def test_check_job_request_sched_feasibility(monkeypatch):
             "success": True,
             "error": None,
             "jobspec": jobspec_dict,
+            "satisfiable": True,
+            "scheduler_message": None,
             "feasibility": {"satisfiable": True, "note": "ok"},
         },
     )
@@ -86,5 +112,6 @@ def test_check_job_request_sched_feasibility(monkeypatch):
 
     assert result["success"] is True
     assert result["jobspec"]["version"] == 1
+    assert result["satisfiable"] is True
     assert result["feasibility"]["satisfiable"] is True
     assert result["conversion_errors"] == []

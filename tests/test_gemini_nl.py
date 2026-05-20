@@ -1,4 +1,4 @@
-from scheduler_mcp.tools.gemini_nl import (
+from scheduler_mcp.transform.gemini_nl import (
     analyze_natural_language_job_request_with_gemini,
     parse_natural_language_job_request_with_gemini,
     submit_natural_language_job_request_to_flux_with_gemini,
@@ -34,7 +34,7 @@ def test_gemini_parse_success(monkeypatch):
             "wall_time": 1800,
         }
 
-    monkeypatch.setattr("scheduler_mcp.tools.gemini_nl._call_gemini_api", fake_call)
+    monkeypatch.setattr("scheduler_mcp.transform.gemini_nl._call_gemini_api", fake_call)
 
     result = parse_natural_language_job_request_with_gemini(
         "1ノードで30分使って hostname を実行したい"
@@ -75,11 +75,11 @@ def test_gemini_analyze_success(monkeypatch):
         }
 
     monkeypatch.setattr(
-        "scheduler_mcp.tools.gemini_nl.parse_natural_language_job_request_with_gemini",
+        "scheduler_mcp.transform.gemini_nl.parse_natural_language_job_request_with_gemini",
         fake_parse,
     )
     monkeypatch.setattr(
-        "scheduler_mcp.tools.gemini_nl.check_job_request_feasibility",
+        "scheduler_mcp.transform.gemini_nl.check_job_request_feasibility",
         fake_feasibility,
     )
 
@@ -117,11 +117,11 @@ def test_gemini_submit_success(monkeypatch):
         }
 
     monkeypatch.setattr(
-        "scheduler_mcp.tools.gemini_nl.parse_natural_language_job_request_with_gemini",
+        "scheduler_mcp.transform.gemini_nl.parse_natural_language_job_request_with_gemini",
         fake_parse,
     )
     monkeypatch.setattr(
-        "scheduler_mcp.tools.gemini_nl.submit_job_request_to_flux",
+        "scheduler_mcp.transform.gemini_nl.submit_job_request_to_flux",
         fake_submit,
     )
 
