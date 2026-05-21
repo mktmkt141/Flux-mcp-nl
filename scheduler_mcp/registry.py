@@ -9,9 +9,16 @@ from scheduler_mcp.job import (
 from scheduler_mcp.resource import get_flux_resource_list
 from scheduler_mcp.sched import (
     check_job_request_sched_allocate,
+    check_job_request_sched_allocate_orelse_reserve,
     check_job_request_sched_feasibility,
+    flux_sched_qmanager_stats,
+    flux_sched_resource_allocate_orelse_reserve,
     flux_sched_resource_allocate_with_satisfiability,
+    flux_sched_resource_cancel,
     flux_sched_resource_feasibility_check,
+    flux_sched_resource_find,
+    flux_sched_resource_info,
+    flux_sched_resource_status,
 )
 from scheduler_mcp.transform import (
     analyze_natural_language_job_request_with_gemini,
@@ -38,9 +45,16 @@ TOOLS = [
     parse_natural_language_job_request_with_gemini,
     parse_natural_language_job_request,
     check_job_request_feasibility,
+    flux_sched_qmanager_stats,
+    flux_sched_resource_allocate_orelse_reserve,
     flux_sched_resource_allocate_with_satisfiability,
+    flux_sched_resource_cancel,
     flux_sched_resource_feasibility_check,
+    flux_sched_resource_find,
+    flux_sched_resource_info,
+    flux_sched_resource_status,
     check_job_request_sched_allocate,
+    check_job_request_sched_allocate_orelse_reserve,
     check_job_request_sched_feasibility,
     get_flux_resource_list,
     flux_cancel_job,
